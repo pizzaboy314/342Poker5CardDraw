@@ -7,5 +7,14 @@
 package classes;
 
 public class Hand {
+	private int pokerRank;
+
+	public int getPokerRank() {
+		return pokerRank;
+	}
+
+	public void setPokerRank(int pokerRank) {
+		this.pokerRank = pokerRank;
+	}
 
 }
