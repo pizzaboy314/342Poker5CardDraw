@@ -5,10 +5,10 @@
  */
 package classes;
 
-public class Card {
-	private static char[] id;
+public class Card implements Comparable {
+	public char[] id;
 
-	private static int rank;
+	public int rank;
 
 	public Card(String in) {
 		id = new char[2];
@@ -17,7 +17,7 @@ public class Card {
 		setRank();
 	}
 
-	public static String getRankString() {
+	public String getRankString() {
 		char c = id[0];
 		String rank;
 		
@@ -68,7 +68,7 @@ public class Card {
 		return rank;
 	}
 
-	public static String getSuitString() {
+	public String getSuitString() {
 		char c = id[1];
 		String suit;
 
@@ -92,21 +92,21 @@ public class Card {
 		return suit;
 	}
 
-	public static String getNameAsString() {
+	public String getNameAsString() {
 		String rank = getRankString();
 		String suit = getSuitString();
 		return rank + " of " + suit;
 	}
 
-	public static char[] getId() {
+	public char[] getId() {
 		return id;
 	}
 
-	public static int getRank() {
+	public int getRank() {
 		return rank;
 	}
 
-	public static void setRank() {
+	public void setRank() {
 		char c = id[0];
 
 		switch (c) {
@@ -152,5 +152,11 @@ public class Card {
 		default:
 			rank = 0;
 		}
+	}
+
+	@Override
+	public int compareTo(Object o) {
+		Card c = (Card)o;
+		return c.rank - rank;
 	}
 }
