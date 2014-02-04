@@ -9,12 +9,14 @@ public class Card implements Comparable {
 	public char[] id;
 
 	public int rank;
+	public int suit;
 
 	public Card(String in) {
 		id = new char[2];
 		id[0] = in.toUpperCase().charAt(0);
 		id[1] = in.toUpperCase().charAt(1);
 		setRank();
+		getSuitString();
 	}
 
 	public String getRankString() {
@@ -75,15 +77,19 @@ public class Card implements Comparable {
 		switch (c) {
 		case 'C':
 			suit = "Clubs";
+			setSuit(1);
 			break;
 		case 'D':
 			suit = "Diamonds";
+			setSuit(2);
 			break;
 		case 'H':
 			suit = "Hearts";
+			setSuit(3);
 			break;
 		case 'S':
 			suit = "Spades";
+			setSuit(4);
 			break;
 		default:
 			suit = "";
@@ -100,6 +106,14 @@ public class Card implements Comparable {
 
 	public char[] getId() {
 		return id;
+	}
+
+	public int getSuit() {
+		return suit;
+	}
+
+	public void setSuit(int suit) {
+		this.suit = suit;
 	}
 
 	public int getRank() {
