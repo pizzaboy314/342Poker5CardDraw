@@ -18,6 +18,8 @@ public class Game {
 		// }
 		//
 		// Hand hnd = new Hand(cards);
+
+		// CardPile test = new CardPile(true);
 	}
 
 }
