@@ -27,6 +27,14 @@ public class Hand {
 			} else {
 				pokerRank = 4;
 			}
+		} else if (getSuitOccurences(hand.get(0).getSuit()) == 4) {
+			pokerRank = 5;
+		} else if(getRankOccurences(hand.get(0).getRank()) == 3){
+			pokerRank = 7;
+		} else if (getRankOccurences(hand.get(0).getRank()) == 2) {
+			// pokerRank = 3;
+
+
 		}
 	}
 
@@ -82,6 +90,20 @@ public class Hand {
 		return handString;
 	}
 
+	public int getRankOccurences(Card c) {
+		int index = hand.indexOf(c);
+		int len = hand.size();
+		int r = c.getRank();
+		int count = 0;
+
+		for (int i = index; i < len; i++) {
+			if (hand.get(i).getRank() == r) {
+				count++;
+			}
+		}
+		return count - 1;
+	}
+
 	public int getRankOccurences(int r) {
 		int count = 0;
 		for (Card c : hand) {
@@ -91,6 +113,7 @@ public class Hand {
 		}
 		return count - 1;
 	}
+
 
 	public int getSuitOccurences(int s) {
 		int count = 0;
@@ -137,6 +160,18 @@ public class Hand {
 			pokerType = "High Card";
 		}
 		return pokerType;
+	}
+
+	public void add(Card c) {
+		hand.add(c);
+	}
+
+	public void remove(Card c) {
+		hand.remove(c);
+	}
+
+	public Card get(int x) {
+		return hand.get(x);
 	}
 
 	public int getPokerRank() {

@@ -67,4 +67,8 @@ public class CardPile {
 		pile.remove(c);
 	}
 
+	public Card get(int x) {
+		return pile.get(x);
+	}
+
 }
