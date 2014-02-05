@@ -21,7 +21,52 @@ public class Hand {
 	}
 
 	public void determinePoker() {
+		if (areSequential()) {
+			if (getSuitOccurences(hand.get(0).getSuit()) == 5) {
+				pokerRank = 8;
+			} else {
+				pokerRank = 4;
+			}
+		}
+	}
 
+	public boolean areSequential() {
+		int firstRank = hand.get(0).getRank();
+		int[] set = new int[] { firstRank, firstRank - 1, firstRank - 2,
+				firstRank - 3, firstRank - 4 };
+		boolean sequentialAceHigh = true;
+		boolean sequentialAceLow = true;
+		int i=0;
+
+		for (Card c : hand) {
+			if (c.getRank() != set[i]) {
+				sequentialAceHigh = false;
+			}
+			i++;
+		}
+		if (firstRank == 14) {
+			List<Card> handAlt = new ArrayList<Card>(hand);
+			Card card = hand.get(0);
+			handAlt.remove(card);
+			card.setRank(1);
+			handAlt.add(card);
+
+			firstRank = handAlt.get(0).getRank();
+			set = new int[] { firstRank, firstRank - 1, firstRank - 2,
+					firstRank - 3, firstRank - 4 };
+			i = 0;
+			for (Card c : hand) {
+				if (c.getRank() != set[i]) {
+					sequentialAceLow = false;
+				}
+				i++;
+			}
+		}
+		if (sequentialAceLow || sequentialAceHigh) {
+			return true;
+		} else {
+			return false;
+		}
 	}
 
 	public String handAsString(boolean numbering) {

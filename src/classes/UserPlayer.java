@@ -8,4 +8,6 @@ package classes;
 
 public class UserPlayer {
 
+	private Hand hand;
+
 }

@@ -6,16 +6,17 @@
 package classes;
 
 public class Card implements Comparable {
-	public char[] id;
+	private char[] id;
 
-	public int rank;
-	public int suit;
+	private int rank;
+
+	private int suit;
 
 	public Card(String in) {
 		id = new char[2];
 		id[0] = in.toUpperCase().charAt(0);
 		id[1] = in.toUpperCase().charAt(1);
-		setRank();
+		setRanks();
 		getSuitString();
 	}
 
@@ -120,7 +121,11 @@ public class Card implements Comparable {
 		return rank;
 	}
 
-	public void setRank() {
+	public void setRank(int rank) {
+		this.rank = rank;
+	}
+
+	public void setRanks() {
 		char c = id[0];
 
 		switch (c) {
