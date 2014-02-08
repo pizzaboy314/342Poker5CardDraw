@@ -6,20 +6,24 @@
  */
 package classes;
 
+import java.util.ArrayList;
+import java.util.List;
+
 
 public class Game {
 
 	public static void main(String[] args) {
-		// String[] tmp = new String[] { "3H", "6C", "AS", "2D", "KC" };
-		// List<Card> cards = new ArrayList<Card>();
-		// for (int i = 0; i < 5; i++) {
-		// Card c = new Card(tmp[i]);
-		// cards.add(c);
-		// }
-		//
-		// Hand hnd = new Hand(cards);
+		String[] tmp = new String[] { "AD", "AS", "4C", "4H", "3S)" };
+		List<Card> cards = new ArrayList<Card>();
+		for (int i = 0; i < 5; i++) {
+			Card c = new Card(tmp[i]);
+			cards.add(c);
+		}
 
-		CardPile test = new CardPile(true);
+		Hand temp = new Hand(cards);
+		System.out.println(temp.getPokerString());
+
+		// CardPile test = new CardPile(true);
 	}
 
 }

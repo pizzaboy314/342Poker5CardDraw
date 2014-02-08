@@ -18,32 +18,69 @@ public class Hand {
 		hand = new ArrayList<Card>(in);
 		pokerRank = 0;
 		sortHand();
+		System.out.println(handAsString(false));
+		determinePoker(); // hand is self-aware
 	}
 
 	public void determinePoker() {
-		if (areSequential()) {
-			if (getSuitOccurences(hand.get(0).getSuit()) == 5) {
-				pokerRank = 8;
-			} else {
-				pokerRank = 4;
-			}
-		} else if (getSuitOccurences(hand.get(0).getSuit()) == 4) {
-			pokerRank = 5;
-		} else if(getRankOccurences(hand.get(0).getRank()) == 3){
-			pokerRank = 7;
-		} else if (getRankOccurences(hand.get(0).getRank()) == 2) {
-			// pokerRank = 3;
-
-
+		if (areSequential() && getSuitOccurences(5) == 5) {
+			pokerRank = 8; // straight flush
+		} else if (getRankOccurences(4) == 7) {
+			pokerRank = 7; // four of a kind
+		} else if (getRankOccurences(2) == 8) {
+			pokerRank = 6; // full house
+		} else if (getSuitOccurences(5) == 5) {
+			pokerRank = 5; // flush
+		} else if (areSequential()) {
+			pokerRank = 4; // straight
+		} else if (getRankOccurences(3) == 5) {
+			pokerRank = 3; // three of a kind
+		} else if (getRankOccurences(2) == 6) {
+			pokerRank = 2; // two pair
+		} else if (getRankOccurences(2) == 2) {
+			pokerRank = 1; // one pair
+		} else {
+			pokerRank = 0; // high card
 		}
+
 	}
 
+	public int getRankOccurences(int n) { // n = matches expected
+		int count = 0;
+		for (int i = 0; i <= (5 - n); i++) {
+			List<Card> handAlt = hand.subList(i, hand.size());
+			int r = handAlt.get(0).getRank();
+			for (Card c : handAlt) {
+				if (c.getRank() == r) {
+					count++;
+				}
+			}
+			if (n == 4 && count == 1) {
+				count += 2;
+			}
+		}
+		return count;
+	}
+
+	public int getSuitOccurences(int n) { // n = matches expected
+		int count = 0;
+		for (int i = 0; i <= (5 - n); i++) {
+			List<Card> handAlt = hand.subList(i, hand.size());
+			int s = handAlt.get(0).getSuit();
+			for (Card c : handAlt) {
+				if (c.getSuit() == s) {
+					count++;
+				}
+			}
+		}
+		return count;
+	}
 	public boolean areSequential() {
 		int firstRank = hand.get(0).getRank();
 		int[] set = new int[] { firstRank, firstRank - 1, firstRank - 2,
 				firstRank - 3, firstRank - 4 };
 		boolean sequentialAceHigh = true;
-		boolean sequentialAceLow = true;
+		boolean sequentialAceLow = false;
 		int i=0;
 
 		for (Card c : hand) {
@@ -53,9 +90,11 @@ public class Hand {
 			i++;
 		}
 		if (firstRank == 14) {
+			sequentialAceLow = true;
 			List<Card> handAlt = new ArrayList<Card>(hand);
 			Card card = hand.get(0);
 			handAlt.remove(card);
+			card = new Card(hand.get(0).getIdString());
 			card.setRank(1);
 			handAlt.add(card);
 
@@ -63,7 +102,7 @@ public class Hand {
 			set = new int[] { firstRank, firstRank - 1, firstRank - 2,
 					firstRank - 3, firstRank - 4 };
 			i = 0;
-			for (Card c : hand) {
+			for (Card c : handAlt) {
 				if (c.getRank() != set[i]) {
 					sequentialAceLow = false;
 				}
@@ -90,40 +129,7 @@ public class Hand {
 		return handString;
 	}
 
-	public int getRankOccurences(Card c) {
-		int index = hand.indexOf(c);
-		int len = hand.size();
-		int r = c.getRank();
-		int count = 0;
 
-		for (int i = index; i < len; i++) {
-			if (hand.get(i).getRank() == r) {
-				count++;
-			}
-		}
-		return count - 1;
-	}
-
-	public int getRankOccurences(int r) {
-		int count = 0;
-		for (Card c : hand) {
-			if (c.getRank() == r) {
-				count++;
-			}
-		}
-		return count - 1;
-	}
-
-
-	public int getSuitOccurences(int s) {
-		int count = 0;
-		for (Card c : hand) {
-			if (c.getSuit() == s) {
-				count++;
-			}
-		}
-		return count - 1;
-	}
 
 	public void sortHand() {
 		Collections.sort(hand);
@@ -132,6 +138,9 @@ public class Hand {
 	public String getPokerString() {
 		String pokerType = "";
 		switch (pokerRank) {
+		case 0:
+			pokerType = "High Card";
+			break;
 		case 1:
 			pokerType = "One Pair";
 			break;
@@ -157,7 +166,7 @@ public class Hand {
 			pokerType = "Straight Flush";
 			break;
 		default:
-			pokerType = "High Card";
+			pokerType = "Error";
 		}
 		return pokerType;
 	}
@@ -180,6 +189,10 @@ public class Hand {
 
 	public void setPokerRank(int pokerRank) {
 		this.pokerRank = pokerRank;
+	}
+
+	public List<Card> getHand() {
+		return hand;
 	}
 
 }

@@ -109,6 +109,10 @@ public class Card implements Comparable {
 		return id;
 	}
 
+	public String getIdString() {
+		return "" + id[0] + id[1];
+	}
+
 	public int getSuit() {
 		return suit;
 	}
