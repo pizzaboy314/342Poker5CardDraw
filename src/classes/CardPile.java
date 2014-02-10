@@ -15,14 +15,16 @@ public class CardPile {
 
 	private List<Card> pile;
 
+	// if newDeck is true, create new deck and assign to pile
+	// otherwise, create empty pile to send cards to later
 	public CardPile(boolean newDeck) {
 		pile = new ArrayList<Card>();
 		if (newDeck) {
 			initializeDeck();
-			shuffleDeck(3);
 		}
 	}
 
+	// creates a new 52-card deck in suit-rank order
 	public void initializeDeck() {
 		char[] suits = new char[] { 'C', 'D', 'H', 'S' };
 		char[] ranks = new char[] { '2', '3', '4', '5', '6', '7', '8', '9',
@@ -40,6 +42,7 @@ public class CardPile {
 		}
 	}
 
+	// shuffles the deck user-specified # of times; default once
 	public void shuffleDeck(int numTimes) {
 		if (numTimes > 0) {
 			for (int i = 0; i < numTimes; i++) {
@@ -51,6 +54,7 @@ public class CardPile {
 		}
 	}
 
+	// returns the string representation of the pile
 	public String pileAsString() {
 		String pileString = "";
 		for (Card c : pile) {
@@ -59,16 +63,23 @@ public class CardPile {
 		return pileString;
 	}
 
+	// adds a card to the pile
 	public void add(Card c) {
 		pile.add(c);
 	}
 
+	// removes a card from the pile
 	public void remove(Card c) {
 		pile.remove(c);
 	}
 
+	// gets the card at position x
 	public Card get(int x) {
 		return pile.get(x);
+	}
+
+	public int size() {
+		return pile.size();
 	}
 
 }

@@ -8,22 +8,51 @@ package classes;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
+import java.util.Scanner;
+
 
 
 public class Game {
 
 	public static void main(String[] args) {
-		String[] tmp = new String[] { "AD", "AS", "4C", "4H", "3S)" };
-		List<Card> cards = new ArrayList<Card>();
-		for (int i = 0; i < 5; i++) {
-			Card c = new Card(tmp[i]);
-			cards.add(c);
+		CardPile drawPile = new CardPile(true);
+		CardPile discardPile = new CardPile(false);
+
+		UserPlayer player = new UserPlayer("Human Player");
+		List<OpponentPlayer> opponents = new ArrayList<OpponentPlayer>();
+
+		Scanner reader = new Scanner(System.in);
+
+		System.out.println("Welcome to 5 Card Draw! Please enter the number of opponents: ");
+		int numOpponents = Integer.parseInt(reader.nextLine());
+
+		for (int i = 0; i < numOpponents; i++) {
+			OpponentPlayer p = new OpponentPlayer("Computer Player " + (i + 1));
+			opponents.add(p);
 		}
 
-		Hand temp = new Hand(cards);
-		System.out.println(temp.getPokerString());
+		System.out.println("The deck is being shuffled.");
+		drawPile.shuffleDeck(3);
 
-		// CardPile test = new CardPile(true);
+		System.out.println("The cards are being dealt.\n");
+		for (int i = 0; i < 5; i++) {
+			Random rand = new Random();
+			for(OpponentPlayer p : opponents){
+				Card c = drawPile.get(rand.nextInt(drawPile.size() - 1));
+				drawPile.remove(c);
+				p.addToHand(c);
+			}
+			Card c = drawPile.get(rand.nextInt(drawPile.size() - 1));
+			drawPile.remove(c);
+			player.addToHand(c);
+		}
+
+		System.out.println("Computer players are discarding unwanted cards.");
+		for(OpponentPlayer p : opponents){
+			
+		}
+
 	}
 
 }

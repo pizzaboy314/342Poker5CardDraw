@@ -6,8 +6,10 @@
  */
 package classes;
 
-public class UserPlayer {
+public class UserPlayer extends Player {
 
-	private Hand hand;
+	public UserPlayer(String s) {
+		super(s);
+	}
 
 }

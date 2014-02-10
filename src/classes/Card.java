@@ -6,20 +6,23 @@
 package classes;
 
 public class Card implements Comparable {
+
 	private char[] id;
-
 	private int rank;
-
 	private int suit;
+	private boolean keep;
 
+	// in = 2-char ID in string form
 	public Card(String in) {
 		id = new char[2];
 		id[0] = in.toUpperCase().charAt(0);
 		id[1] = in.toUpperCase().charAt(1);
 		setRanks();
 		getSuitString();
+		keep = false;
 	}
 
+	// returns the string representation of the rank
 	public String getRankString() {
 		char c = id[0];
 		String rank;
@@ -71,6 +74,7 @@ public class Card implements Comparable {
 		return rank;
 	}
 
+	// returns the string representation of the suit
 	public String getSuitString() {
 		char c = id[1];
 		String suit;
@@ -99,36 +103,44 @@ public class Card implements Comparable {
 		return suit;
 	}
 
+	// returns the string representation of the card
 	public String getNameAsString() {
 		String rank = getRankString();
 		String suit = getSuitString();
 		return rank + " of " + suit;
 	}
 
+	// returns the card's 2-char ID
 	public char[] getId() {
 		return id;
 	}
 
+	// returns the string representation of the card's 2-char ID
 	public String getIdString() {
 		return "" + id[0] + id[1];
 	}
 
+	// returns the value of the card's suit
 	public int getSuit() {
 		return suit;
 	}
 
+	// sets the value of the card's suit
 	public void setSuit(int suit) {
 		this.suit = suit;
 	}
 
+	// returns the value of the card's rank
 	public int getRank() {
 		return rank;
 	}
 
+	// sets the value of the card's rank
 	public void setRank(int rank) {
 		this.rank = rank;
 	}
 
+	// determines the rank of the card based on its ID
 	public void setRanks() {
 		char c = id[0];
 
@@ -177,9 +189,21 @@ public class Card implements Comparable {
 		}
 	}
 
+	// returns whether or not this card will be kept
+	public boolean willKeep() {
+		return keep;
+	}
+
+	// sets whether or not this card will be kept
+	public void setKeep(boolean keep) {
+		this.keep = keep;
+	}
+
+	// Comparator object implementation to make Card sortable by rank
 	@Override
 	public int compareTo(Object o) {
-		Card c = (Card)o;
+		Card c = (Card) o;
 		return c.rank - rank;
 	}
+
 }
