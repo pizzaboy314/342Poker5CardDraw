@@ -23,7 +23,8 @@ public class Hand {
 
 	// determines the poker value of the hand
 	public void determinePoker() {
-		if (areSequential() && getSuitOccurences(5) == 5) { // straight flush
+		if (areSequential(hand) && getSuitOccurences(5) == 5) { // straight
+																// flush
 			pokerRank = 8;
 		} else if (getRankOccurences(4) == 7) { // four of a kind
 			pokerRank = 7;
@@ -31,7 +32,7 @@ public class Hand {
 			pokerRank = 6;
 		} else if (getSuitOccurences(5) == 5) { // flush
 			pokerRank = 5;
-		} else if (areSequential()) { // straight
+		} else if (areSequential(hand)) { // straight
 			pokerRank = 4;
 		} else if (getRankOccurences(3) == 6) { // three of a kind
 			pokerRank = 3;
@@ -48,49 +49,70 @@ public class Hand {
 	public void determineDiscards() {
 		switch (pokerRank) {
 		case 0: // high card
-
+			if (getSuitOccurences(4) == 5) {
+				setAllKeep(1, 4, true);
+			} else if (getSuitOccurences(4) == 7) {
+				setAllKeep(0, 3, true);
+			} else if (areSequential(hand.subList(0, 4))) {
+				setAllKeep(0, 3, true);
+			} else if (areSequential(hand.subList(1, 5))) {
+				setAllKeep(1, 4, true);
+			} else if (hand.get(0).getRank() == 14) {
+				setKeep(0, true);
+			} else {
+				setAllKeep(0, 1, true);
+			}
+			break;
 		case 1: // one pair
 			if (hand.get(0).getRank() == hand.get(1).getRank()) {
-				setAllInPoker(0, 1, true);
+				setAllKeep(0, 1, true);
 			}
 			if (hand.get(1).getRank() == hand.get(2).getRank()) {
-				setAllInPoker(1, 2, true);
+				setAllKeep(1, 2, true);
 			}
 			if (hand.get(2).getRank() == hand.get(3).getRank()) {
-				setAllInPoker(2, 3, true);
+				setAllKeep(2, 3, true);
 			}
 			if (hand.get(3).getRank() == hand.get(4).getRank()) {
-				setAllInPoker(3, 4, true);
+				setAllKeep(3, 4, true);
 			}
+			break;
 		case 2: // two pair
 			if (hand.get(0).getRank() == hand.get(1).getRank()) {
-				setAllInPoker(0, 1, true);
+				setAllKeep(0, 1, true);
 				if (hand.get(2).getRank() == hand.get(3).getRank()) {
-					setAllInPoker(2, 3, true);
+					setAllKeep(2, 3, true);
 				} else {
-					setAllInPoker(3, 4, true);
+					setAllKeep(3, 4, true);
 				}
 			} else {
-				setAllInPoker(1, 4, true);
+				setAllKeep(1, 4, true);
 			}
+			break;
 		case 3: // three of a kind
 			if (hand.get(0).getRank() == hand.get(2).getRank()) {
-				setAllInPoker(0, 2, true);
+				setAllKeep(0, 2, true);
 			} else {
-				setAllInPoker(2, 4, true);
+				setAllKeep(2, 4, true);
 			}
+			break;
 		case 4: // straight
-			setAllInPoker(true);
+			setAllKeep(true);
+			break;
 		case 5: // flush
-			setAllInPoker(true);
+			setAllKeep(true);
+			break;
 		case 6: // full house
-			setAllInPoker(true);
+			setAllKeep(true);
+			break;
 		case 7: // four of a kind
 			if (hand.get(0).getRank() == hand.get(1).getRank()) {
-				setAllInPoker(0, 3, true);
+				setAllKeep(0, 3, true);
 			}
+			break;
 		case 8: // straight flush
-			setAllInPoker(true);
+			setAllKeep(true);
+			break;
 		}
 	}
 
@@ -130,39 +152,46 @@ public class Hand {
 	}
 
 	// determines if the hand is sequential; IE: 8,7,6,5,4 etc.
-	public boolean areSequential() {
-		int firstRank = hand.get(0).getRank();
-		int[] set = new int[] { firstRank, firstRank - 1, firstRank - 2,
-				firstRank - 3, firstRank - 4 };
+	public boolean areSequential(List<Card> cards) {
+		int firstRank = cards.get(0).getRank();
+		int[] set = new int[cards.size()];
 		boolean sequentialAceHigh = true;
 		boolean sequentialAceLow = false;
-		int i=0;
 
-		for (Card c : hand) {
-			if (c.getRank() != set[i]) {
+		for (int i = 0; i < cards.size(); i++) {
+			set[i] = firstRank - i;
+		}
+
+		int j = 0;
+		for (Card c : cards) {
+			if (c.getRank() != set[j]) {
 				sequentialAceHigh = false;
 			}
-			i++;
+			j++;
 		}
 		// if hand contains an ace, recheck it with ace as low card
 		if (firstRank == 14) {
 			sequentialAceLow = true;
-			List<Card> handAlt = new ArrayList<Card>(hand);
-			Card card = hand.get(0);
+			List<Card> handAlt = new ArrayList<Card>(cards);
+			Card card = cards.get(0);
 			handAlt.remove(card);
-			card = new Card(hand.get(0).getIdString());
+			card = new Card(cards.get(0).getIdString());
 			card.setRank(1);
 			handAlt.add(card);
 
 			firstRank = handAlt.get(0).getRank();
-			set = new int[] { firstRank, firstRank - 1, firstRank - 2,
-					firstRank - 3, firstRank - 4 };
-			i = 0;
+			set = new int[handAlt.size()];
+
+			for (int i = 0; i < handAlt.size(); i++) {
+				set[i] = firstRank - i;
+			}
+
+			j = 0;
 			for (Card c : handAlt) {
-				if (c.getRank() != set[i]) {
+				if (c.getRank() != set[j]) {
 					sequentialAceLow = false;
 				}
-				i++;
+				j++;
 			}
 		}
 		// if it is sequential with ace high OR low, return true
@@ -245,16 +274,6 @@ public class Hand {
 			sortHand();
 			determinePoker(); // hand is self-aware
 			setHandSum();
-			System.out.println(handAsString(true));
-			System.out.println(getPokerString());
-
-			String s = "";
-			for (Card card : hand) {
-				if (card.willKeep() == false) {
-					s += card.getNameAsString() + " ";
-				}
-			}
-			System.out.println("Will discard: " + s + "\n");
 		}
 	}
 
@@ -269,20 +288,20 @@ public class Hand {
 	}
 
 	// sets whether or not the card at position x will be kept
-	public void setIsInPoker(int x, boolean val) {
+	public void setKeep(int x, boolean val) {
 		Card c = hand.get(x);
 		c.setKeep(val);
 	}
 
 	// sets whether or not all the cards will be kept
-	public void setAllInPoker(boolean val) {
+	public void setAllKeep(boolean val) {
 		for (Card c : hand) {
 			c.setKeep(val);
 		}
 	}
 
 	// sets whether or not all the cards in the selected range will be kept
-	public void setAllInPoker(int from, int to, boolean val) {
+	public void setAllKeep(int from, int to, boolean val) {
 		List<Card> handAlt = hand.subList(from, to + 1);
 		for (Card c : handAlt) {
 			c.setKeep(val);

@@ -50,6 +50,14 @@ public class Player implements Comparable {
 		this.useSum = useSum;
 	}
 
+	public String getName() {
+		return name;
+	}
+
+	public Hand getHand() {
+		return hand;
+	}
+
 	@Override
 	public int compareTo(Object o) {
 		Player p = (Player) o;
@@ -60,9 +68,5 @@ public class Player implements Comparable {
 			val = p.handSum - handSum;
 		}
 		return val;
-	}
-
-	public String getName() {
-		return name;
 	}
 }
