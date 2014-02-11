@@ -1,14 +1,13 @@
 /**
  * Bryan Spahr and Khurratul-Ain Naseer
  * 
- * User Player class, containing the user's hand and 
- * methods for interacting with the user interface.
+ * User Player class which extends the Player supertype.
  */
 package classes;
 
 public class UserPlayer extends Player {
 
-	public UserPlayer(String s) {
+	public UserPlayer(String s) { // s = name of player
 		super(s);
 	}
 

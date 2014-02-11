@@ -46,6 +46,7 @@ public class Hand {
 
 	}
 
+	// determines which cards will be discarded (for computer players)
 	public void determineDiscards() {
 		switch (pokerRank) {
 		case 0: // high card
@@ -136,7 +137,8 @@ public class Hand {
 		return count;
 	}
 
-	// returns the # of suit matches to the first card's suit
+	// compares the suit of card 1 of increasingly small sublists of hand
+	// until sublist size = n. returns # of suit matches in each sublist
 	public int getSuitOccurences(int n) { // n = matches expected
 		int count = 0;
 		for (int i = 0; i <= (5 - n); i++) {
@@ -151,7 +153,7 @@ public class Hand {
 		return count;
 	}
 
-	// determines if the hand is sequential; IE: 8,7,6,5,4 etc.
+	// determines if the given list is sequential; IE: 8,7,6,5,4 etc.
 	public boolean areSequential(List<Card> cards) {
 		int firstRank = cards.get(0).getRank();
 		int[] set = new int[cards.size()];

@@ -73,11 +73,12 @@ public class CardPile {
 		pile.remove(c);
 	}
 
-	// gets the card at position x
+	// returns the card at position x
 	public Card get(int x) {
 		return pile.get(x);
 	}
 
+	// returns the size of this pile
 	public int size() {
 		return pile.size();
 	}

@@ -5,7 +5,7 @@
  */
 package classes;
 
-public class Card implements Comparable {
+public class Card implements Comparable<Card> {
 
 	private char[] id;
 	private int rank;
@@ -201,8 +201,7 @@ public class Card implements Comparable {
 
 	// Comparator object implementation to make Card sortable by rank
 	@Override
-	public int compareTo(Object o) {
-		Card c = (Card) o;
+	public int compareTo(Card c) {
 		return c.rank - rank;
 	}
 
